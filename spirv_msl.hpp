@@ -191,6 +191,7 @@ public:
 		uint32_t view_mask_buffer_index = 24;
 		uint32_t shader_input_wg_index = 0;
 		uint32_t device_index = 0;
+		uint32_t uniform_buffer_index = 0;
 		bool enable_point_size_builtin = true;
 		bool disable_rasterization = false;
 		bool capture_output_to_buffer = false;
@@ -623,6 +624,7 @@ protected:
 	std::unordered_map<StageSetBinding, std::pair<MSLResourceBinding, bool>, InternalHasher> resource_bindings;
 
 	uint32_t next_metal_resource_index_buffer = 0;
+	uint32_t next_metal_resource_index_uniform_buffer = 0;
 	uint32_t next_metal_resource_index_texture = 0;
 	uint32_t next_metal_resource_index_sampler = 0;
 	// Intentionally uninitialized, works around MSVC 2013 bug.
