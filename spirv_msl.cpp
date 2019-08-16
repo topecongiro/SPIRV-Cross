@@ -901,6 +901,7 @@ string CompilerMSL::compile()
 
 		// Start bindings at zero.
 		next_metal_resource_index_buffer = 0;
+		next_metal_resource_index_uniform_buffer = msl_options.uniform_buffer_index;
 		next_metal_resource_index_texture = 0;
 		next_metal_resource_index_sampler = 0;
 		for (auto &id : next_metal_resource_ids)
@@ -7492,8 +7493,13 @@ uint32_t CompilerMSL::get_metal_resource_index(SPIRVariable &var, SPIRType::Base
 			next_metal_resource_index_sampler += binding_stride;
 			break;
 		default:
-			resource_index = next_metal_resource_index_buffer;
-			next_metal_resource_index_buffer += binding_stride;
+			if (var.storage == StorageClassUniformConstant || var.storage == StorageClassUniform) {
+				resource_index = next_metal_resource_index_uniform_buffer;
+				next_metal_resource_index_uniform_buffer += binding_stride;
+			} else {
+				resource_index = next_metal_resource_index_buffer;
+				next_metal_resource_index_buffer += binding_stride;
+			}
 			break;
 		}
 	}

@@ -517,6 +517,7 @@ struct CLIArguments
 	bool msl_multiview = false;
 	bool msl_view_index_from_device_index = false;
 	bool msl_dispatch_base = false;
+	uint32_t msl_uniform_buffer_index = 0;
 	bool glsl_emit_push_constant_as_ubo = false;
 	bool glsl_emit_ubo_as_plain_uniforms = false;
 	bool vulkan_glsl_disable_ext_samplerless_texture_functions = false;
@@ -597,6 +598,7 @@ static void print_help()
 	                "\t[--msl-argument-buffers]\n"
 	                "\t[--msl-texture-buffer-native]\n"
 	                "\t[--msl-discrete-descriptor-set <index>]\n"
+	                "\t[--msl-uniform-buffer-index <index>]\n"
 	                "\t[--msl-multiview]\n"
 	                "\t[--msl-view-index-from-device-index]\n"
 	                "\t[--msl-dispatch-base]\n"
@@ -761,6 +763,7 @@ static string compile_iteration(const CLIArguments &args, std::vector<uint32_t> 
 		msl_opts.multiview = args.msl_multiview;
 		msl_opts.view_index_from_device_index = args.msl_view_index_from_device_index;
 		msl_opts.dispatch_base = args.msl_dispatch_base;
+		msl_opts.uniform_buffer_index = args.msl_uniform_buffer_index;
 		msl_comp->set_msl_options(msl_opts);
 		for (auto &v : args.msl_discrete_descriptor_sets)
 			msl_comp->add_discrete_descriptor_set(v);
@@ -1146,6 +1149,9 @@ static int main_inner(int argc, char *argv[])
 	cbs.add("--msl-version", [&args](CLIParser &parser) {
 		args.msl_version = parser.next_uint();
 		args.set_msl_version = true;
+	});
+	cbs.add("--msl-uniform-buffer-index", [&args](CLIParser &parser) {
+	    args.msl_uniform_buffer_index = parser.next_uint();
 	});
 
 	cbs.add("--remove-unused-variables", [&args](CLIParser &) { args.remove_unused = true; });
