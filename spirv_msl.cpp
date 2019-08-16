@@ -903,8 +903,6 @@ string CompilerMSL::compile()
 		next_metal_resource_index_buffer = 0;
 		next_metal_resource_index_texture = 0;
 		next_metal_resource_index_sampler = 0;
-		for (auto &id : next_metal_resource_ids)
-			id = 0;
 
 		// Move constructor for this type is broken on GCC 4.9 ...
 		buffer.reset();
@@ -7444,6 +7442,11 @@ uint32_t CompilerMSL::get_metal_resource_index(SPIRVariable &var, SPIRType::Base
 			set_extended_decoration(var.self, resource_decoration, remap.first.msl_buffer);
 			return remap.first.msl_buffer;
 		}
+	}
+
+	if (has_decoration(var.self, DecorationBinding)) {
+	    var_binding = get_decoration(var.self, DecorationBinding);
+	    return var_binding;
 	}
 
 	// If we have already allocated an index, keep using it.
