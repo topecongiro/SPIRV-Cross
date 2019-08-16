@@ -7444,7 +7444,7 @@ uint32_t CompilerMSL::get_metal_resource_index(SPIRVariable &var, SPIRType::Base
 		}
 	}
 
-	if (has_decoration(var.self, DecorationBinding)) {
+	if ((var.storage == StorageClassUniform || var.storage == StorageClassUniformConstant) && has_decoration(var.self, DecorationBinding)) {
 	    var_binding = get_decoration(var.self, DecorationBinding);
 	    return var_binding;
 	}
